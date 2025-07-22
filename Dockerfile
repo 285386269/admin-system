@@ -16,6 +16,12 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
+# 安装 Prisma CLI 以便 generate
+RUN npm install --omit=dev prisma
+
+# 生成 Prisma Client
+RUN npx prisma generate
+
 # Next.js collects completely anonymous telemetry data about general usage.
 # Learn more here: https://nextjs.org/telemetry
 # Uncomment the following line in case you want to disable telemetry during the build.
