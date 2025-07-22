@@ -45,6 +45,9 @@ RUN chown nextjs:nodejs .next
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
+# 安装 Prisma CLI 以便 migrate/seed
+RUN npm install --omit=dev prisma
+
 USER nextjs
 
 EXPOSE 3000
@@ -55,4 +58,4 @@ ENV HOSTNAME "0.0.0.0"
 
 # server.js is created by next build from the standalone output
 # https://nextjs.org/docs/pages/api-reference/next-config-js/output
-CMD ["node", "server.js"] 
+CMD ["sh", "-c", "npx prisma migrate deploy && npx prisma db seed && node server.js"] 
