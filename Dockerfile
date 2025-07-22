@@ -16,8 +16,8 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
-# 安装 Prisma CLI 和 @prisma/client 以便 generate
-RUN npm install --omit=dev prisma @prisma/client
+# 安装所有依赖（包括 devDependencies）
+RUN npm install
 
 # 生成 Prisma Client
 RUN npx prisma generate
