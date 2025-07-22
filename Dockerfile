@@ -57,6 +57,10 @@ COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
 # 安装 Prisma CLI 以便 migrate/seed
 
+# 复制 prisma 目录和 @prisma 依赖，确保生产镜像可用
+COPY --from=builder /app/prisma ./prisma
+COPY --from=builder /app/node_modules/@prisma ./node_modules/@prisma
+
 USER nextjs
 
 EXPOSE 3000
