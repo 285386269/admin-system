@@ -15,6 +15,7 @@ FROM base AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
+RUN [ -d public ] || mkdir public
 
 # 安装所有依赖（包括 devDependencies）
 RUN npm install
