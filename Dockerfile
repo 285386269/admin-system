@@ -1,5 +1,8 @@
 FROM node:18-alpine AS base
 
+# 安装 libc6-compat 和 openssl
+RUN apk add --no-cache libc6-compat openssl
+
 # Install dependencies only when needed
 FROM base AS deps
 # Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.
@@ -53,7 +56,6 @@ COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
 # 安装 Prisma CLI 以便 migrate/seed
-RUN npm install --omit=dev prisma
 
 USER nextjs
 
